@@ -1,0 +1,5 @@
+__pycache__/
+.curator_state_v3.json
+.curator_embeddings_v3.jsonl
+.env
+*.tmp
