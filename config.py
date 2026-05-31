@@ -22,7 +22,7 @@ EMBEDDING_DIMS = 4096
 # --- HTTP ---
 HTTP_TIMEOUT = 60
 MAX_RETRIES = 3
-RETRY_BACKOFF = [1, 2, 4]  # seconds
+RETRY_BACKOFF = [1, 2, 4]
 
 # --- Concurrency ---
 MAX_CONCURRENT_REQUESTS = 5
@@ -45,7 +45,6 @@ GLOBAL_EXCLUDE_DIRS = {
 
 
 def _is_globally_excluded(file_path: Path, vault: Path) -> bool:
-    """Return True if *file_path* lives inside a globally excluded directory."""
     try:
         rel = file_path.relative_to(vault)
     except ValueError:
