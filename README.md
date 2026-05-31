@@ -46,7 +46,7 @@ Long-form research content here...
 ---
 title: My Research Note
 date: 2026-05-15
-summary: Explora a relacao entre arquitetura de memoria e agentes autonomos
+summary: Explora a relação entre arquitetura de memória e agentes autônomos
 tags: ["memoria", "agentes-ia", "arquitetura", "qdrant", "pesquisa"]
 ---
 
@@ -65,13 +65,13 @@ Long-form research content here...
 
 **After Phase 3 (generated INDEX.md):**
 ```markdown
-# Indice — concepts
+# Índice — concepts
 
 _165 arquivos_
 
-- **[[context-enhancer]]** — Sistema de injecao automatica de contexto via pre_llm_call
-- **[[memory-architecture]]** — Visao geral das 4 camadas de memoria do Hermes Agent
-- **[[qdrant-management]]** — Gestao de colecoes Qdrant com named vectors
+- **[[context-enhancer]]** — Sistema de injeção automática de contexto via pre_llm_call
+- **[[memory-architecture]]** — Visão geral das 4 camadas de memória do Hermes Agent
+- **[[qdrant-management]]** — Gestão de coleções Qdrant com named vectors
 ...
 ```
 
@@ -86,7 +86,8 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 # Set required environment variables
-export OPENROUTER_API_KEY="<your-openrouter=*** VAULT_PATH="/path/to/your/obsidian/vault"
+export OPENROUTER_API_KEY="<your-openrouter-api-key>"
+export VAULT_PATH="/path/to/your/obsidian/vault"
 
 # Run a pilot first (test on 10 files, review results)
 python vault_curator_v3.py phase1 --limit 10
@@ -128,7 +129,7 @@ The system is **incremental and additive** — it only adds metadata. To undo:
 
 ## Safety
 
-> **Recommended before first execution:**
+> ⚠️ **Recommended before first execution:**
 > - Backup your vault (or use Git)
 > - Test Phase 1 with `--limit 10` and review the generated summaries
 > - Review the generated `## Notas Relacionadas` links for quality before large-scale Phase 2
@@ -175,7 +176,7 @@ To reset state and re-process everything:
 python vault_curator_v3.py reset
 ```
 
-## Performance and Cost
+## Performance & Cost
 
 | Phase | Bottleneck | ~1,000 files |
 |-------|-----------|-------------|
