@@ -86,7 +86,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 # Set required environment variables
-export OPENROUTER_API_KEY="sk-o...port VAULT_PATH="/path/to/your/obsidian/vault"
+export OPENROUTER_API_KEY="<your-openrouter=*** VAULT_PATH="/path/to/your/obsidian/vault"
 
 # Run a pilot first (test on 10 files, review results)
 python vault_curator_v3.py phase1 --limit 10
