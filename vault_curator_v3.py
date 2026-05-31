@@ -7,7 +7,7 @@ Usage:
     python vault_curator_v3.py phase3 [--path /vault]
     python vault_curator_v3.py all [--path /vault] [--limit N]
     python vault_curator_v3.py status [--path /vault]
-    python vault_curator_v3.py reset
+    python vault_curator_v3.py reset [--path /vault]
 
 Environment:
     OPENROUTER_API_KEY    Required for phases 1 and 2.
@@ -43,6 +43,9 @@ def cmd_phase1(args):
     if not vault.exists():
         print(f"ERROR: Vault path does not exist: {vault}", file=sys.stderr)
         sys.exit(1)
+    if not config.OPENROUTER_API_KEY:
+        print("ERROR: OPENROUTER_API_KEY not set.", file=sys.stderr)
+        sys.exit(1)
     stats = asyncio.run(run_phase1(vault, limit=args.limit))
     print(json.dumps(stats, indent=2))
 
@@ -51,6 +54,9 @@ def cmd_phase2(args):
     vault = Path(args.path) if args.path else config.VAULT_PATH
     if not vault.exists():
         print(f"ERROR: Vault path does not exist: {vault}", file=sys.stderr)
+        sys.exit(1)
+    if not config.OPENROUTER_API_KEY:
+        print("ERROR: OPENROUTER_API_KEY not set.", file=sys.stderr)
         sys.exit(1)
     stats = asyncio.run(run_phase2(vault))
     print(json.dumps(stats, indent=2))
@@ -73,6 +79,9 @@ def cmd_all(args):
     if not vault.exists():
         print(f"ERROR: Vault path does not exist: {vault}", file=sys.stderr)
         sys.exit(1)
+    if not config.OPENROUTER_API_KEY:
+        print("ERROR: OPENROUTER_API_KEY not set.", file=sys.stderr)
+        sys.exit(1)
 
     print("=== Phase 1: Enrichment ===")
     stats1 = asyncio.run(run_phase1(vault, limit=args.limit))
@@ -92,6 +101,9 @@ def cmd_all(args):
 
 def cmd_status(args):
     vault = Path(args.path) if args.path else config.VAULT_PATH
+    if not vault.exists():
+        print(f"ERROR: Vault path does not exist: {vault}", file=sys.stderr)
+        sys.exit(1)
     state = StateManager(config.STATE_FILE if args.path is None else Path(args.path) / ".curator_state_v3.json")
     md_count = len(list(vault.rglob("*.md")))
     p1_done = len(state.state.get("phase1_done", []))
@@ -109,8 +121,9 @@ def cmd_status(args):
 
 
 def cmd_reset(args):
-    state_file = config.STATE_FILE
-    emb_file = config.EMBEDDINGS_FILE
+    vault = Path(args.path) if args.path else config.VAULT_PATH
+    state_file = vault / ".curator_state_v3.json"
+    emb_file = vault / ".curator_embeddings_v3.jsonl"
     removed = []
     for f in [state_file, emb_file]:
         if f.exists():
@@ -156,6 +169,7 @@ def main():
 
     # reset
     pr = sub.add_parser("reset", help="Remove state files (start fresh)")
+    pr.add_argument("--path", help="Vault path")
     pr.set_defaults(func=cmd_reset)
 
     args = parser.parse_args()
